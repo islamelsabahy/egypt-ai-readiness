@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Egypt AI Readiness · جاهزية الشركة للذكاء الاصطناعي</title>
+<link rel="stylesheet" href="app/style.css">
+<style>.qrow{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}@media(max-width:600px){.qrow{grid-template-columns:minmax(0,1fr)}}
+details.dim{border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:8px}details.dim summary{cursor:pointer;display:flex;justify-content:space-between;gap:10px}
+.big{font-size:44px;color:var(--gold);font-weight:700;line-height:1}.ph{border-inline-start:3px solid var(--gold);padding:4px 12px;margin:10px 0}
+svg text{fill:var(--mu);font-size:11px}</style>
+</head>
+<body>
+<header>
+  <div><h1 id="t_title"></h1><p class="sub" id="t_sub"></p></div>
+  <div class="row noprint"><button class="g" id="lang"></button><button class="g" id="share"></button><button class="g" id="csv"></button><button class="g" id="prn"></button></div>
+</header>
+<main>
+  <section class="card">
+    <h2 id="t_prof"></h2>
+    <div class="row">
+      <div class="f"><label id="t_co"></label><input id="co" maxlength="80"></div>
+      <div class="f"><label><span id="t_sec"></span> <span id="q_sec"></span></label><select id="sector"></select></div>
+      <div class="f noprint"><label id="t_demo"></label><select id="demo"></select></div>
+    </div>
+    <p class="note" id="t_scale"></p>
+  </section>
+  <section class="card noprint"><h2 id="t_q"></h2><div id="qs"></div></section>
+  <section class="card">
+    <h2 id="t_res"></h2>
+    <div class="grid2">
+      <div><div class="big" id="score"></div><div id="lvl" style="margin:6px 0 12px"></div><div class="tw"><table id="dims"></table></div></div>
+      <div id="radar" style="text-align:center"></div>
+    </div>
+  </section>
+  <section class="card"><h2 id="t_road"></h2><div id="road"></div></section>
+  <section class="card"><h2 id="t_uc"></h2><p class="note" id="t_ucn"></p><div class="tw"><table id="uc"></table></div></section>
+  <section class="card noprint"><h2 id="t_bands"></h2><p class="note" id="t_bandsn"></p><div class="row" id="bands"></div></section>
+  <section class="card noprint" id="ai"></section>
+  <p class="note" id="t_disc" style="text-align:center"></p>
+</main>
+<footer>Islam El-Sherbiny · <a href="https://github.com/islamelsabahy/egypt-ai-readiness">GitHub</a></footer>
+<script src="app/kit.js"></script><script src="app/ai.js"></script><script src="app/readiness.js"></script>
+<script>
+"use strict";
+var T={ar:{title:"جاهزية شركتك للذكاء الاصطناعي",sub:"تقييم في 10 دقايق: درجة، أكبر فجوات، أنسب حالات استخدام، وخطة 90 يوم.",prof:"بيانات الشركة",co:"اسم الشركة (اختياري، مش بيترفع)",sec:"القطاع",demo:"مثال جاهز",scale:"كل سؤال من 0 لـ 4: 0 مش موجود، 1 بشكل عشوائي، 2 جزئي، 3 معتمد ومطبق، 4 بيتقاس وبيتحسن.",q:"الأسئلة",res:"النتيجة",road:"خطة 90 يوم",uc:"حالات الاستخدام المناسبة",ucn:"«جاهزة» يعني شركتك عندها الأساس المطلوب. غير كده بيظهر إيه الناقص بالظبط.",bands:"تقدير التكلفة",bandsn:"قيم تقديرية لكل فئة مشروع بالجنيه. عدّلها حسب عروض الأسعار اللي عندك.",disc:"تقييم ذاتي استرشادي. التكاليف تقديرية وليست عرض سعر.",
+ share:"نسخ رابط النتيجة",copied:"اتنسخ ✓",csv:"تصدير CSV",prn:"طباعة / PDF",total:"الدرجة الكلية",dim:"المحور",sc:"الدرجة",gap:"الأولوية",uc1:"حالة الاستخدام",st:"الحالة",val:"القيمة",eff:"الجهد",cost:"التكلفة التقديرية",ready:"جاهزة",need:"محتاج",pilot:"تجربة (Pilot)",fix:"تأسيس",days:"يوم",pb:"ميزانية التجارب المقترحة",none:"—",
+ bandn:{low:"مشروع صغير",medium:"مشروع متوسط",high:"مشروع كبير"},egp:"ج.م",
+ ans:["0 · مش موجود","1 · عشوائي","2 · جزئي","3 · معتمد ومطبق","4 · بيتقاس وبيتحسن"],
+ demos:{"":"—",low:"شركة في البداية",mid:"شركة متوسطة",high:"شركة متقدمة"},
+ hsec:"القطاع بيحدد حالات الاستخدام الخاصة بيه (مثلاً وكيل المبيعات للعقارات والتجزئة)."},
+ en:{title:"Your company's AI readiness",sub:"A 10-minute assessment: score, biggest gaps, best-fit use cases and a 90-day plan.",prof:"Company",co:"Company name (optional, never uploaded)",sec:"Sector",demo:"Example",scale:"Each question 0 to 4: 0 none, 1 ad hoc, 2 partial, 3 defined and applied, 4 measured and improving.",q:"Questions",res:"Result",road:"90-day plan",uc:"Best-fit use cases",ucn:"“Ready” means you already have the foundation it needs. Otherwise the exact gap is shown.",bands:"Cost assumptions",bandsn:"Indicative EGP per project size. Edit them to match the quotes you have.",disc:"Indicative self-assessment. Costs are estimates, not a quotation.",
+ share:"Copy result link",copied:"Copied ✓",csv:"Export CSV",prn:"Print / PDF",total:"Overall score",dim:"Dimension",sc:"Score",gap:"Priority",uc1:"Use case",st:"Status",val:"Value",eff:"Effort",cost:"Indicative cost",ready:"Ready",need:"Needs",pilot:"Pilot",fix:"Foundation",days:"days",pb:"Suggested pilot budget",none:"—",
+ bandn:{low:"Small project",medium:"Medium project",high:"Large project"},egp:"EGP",
+ ans:["0 · None","1 · Ad hoc","2 · Partial","3 · Defined & applied","4 · Measured & improving"],
+ demos:{"":"—",low:"Early-stage company",mid:"Mid-maturity company",high:"Advanced company"},
+ hsec:"The sector decides which sector-specific use cases appear (e.g. the sales agent for real estate and retail)."}};
+var L=function(){return Kit.lang==="ar"?0:1},t=function(k){return T[Kit.lang][k]},$=function(i){return document.getElementById(i)};
+var A=Readiness.decode(location.hash.slice(1).split("&")[0]),SECTOR="realestate",BANDS=JSON.parse(JSON.stringify(Readiness.BANDS)),R=null;
+(function(){var m=/sector=(\w+)/.exec(location.hash);if(m&&Readiness.SECTORS[m[1]])SECTOR=m[1]})();
+var DEMOS={low:[1,0,0,1,1,0,1,0,0,0,1,1,0,0,1,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0],mid:[2,2,1,2,2,1,2,2,2,3,2,2,3,2,1,2,2,1,2,2,2,1,2,1,1,3,1,2,1,1,2,1],high:[4,3,3,3,3,3,3,4,3,4,3,4,3,4,4,3,3,3,3,4,3,3,3,4,3,3,3,4,3,3,4,3]};
+function applyDemo(k){var v=DEMOS[k];if(!v)return;var i=0;Readiness.DIMS.forEach(function(d){A[d.id]=d.q.map(function(){return v[i++]||0})})}
+function dimName(id){var d=Readiness.DIMS.filter(function(x){return x.id===id})[0];return d[Kit.lang]}
+function ucName(id){var u=Readiness.USECASES.filter(function(x){return x.id===id})[0];return u[Kit.lang]}
+function buildQs(){$("qs").innerHTML=Readiness.DIMS.map(function(d,j){return '<details class="dim"'+(j===0?" open":"")+'><summary><b>'+d[Kit.lang]+'</b><span class="pill" id="ds_'+d.id+'"></span></summary>'+d.q.map(function(q,i){return '<div class="qrow"><div>'+Kit.esc(q[L()])+'</div><select data-d="'+d.id+'" data-i="'+i+'">'+t("ans").map(function(a,v){return '<option value="'+v+'"'+(A[d.id][i]===v?" selected":"")+'>'+a+'</option>'}).join("")+'</select></div>'}).join("")+'</details>'}).join("")}
+function radar(){var n=Readiness.DIMS.length,cx=150,cy=140,r=100,pt=function(i,v){var a=-Math.PI/2+2*Math.PI*i/n;return [cx+Math.cos(a)*r*v/100,cy+Math.sin(a)*r*v/100]};
+ var s='<svg viewBox="0 0 300 290" width="100%" style="max-width:360px" role="img" aria-label="radar">';
+ [25,50,75,100].forEach(function(v){s+='<polygon points="'+Readiness.DIMS.map(function(_,i){return pt(i,v).join(",")}).join(" ")+'" fill="none" stroke="#2a2f3a"/>'});
+ s+='<polygon points="'+Readiness.DIMS.map(function(d,i){return pt(i,R.dims[d.id]).join(",")}).join(" ")+'" fill="rgba(212,175,55,.25)" stroke="#d4af37" stroke-width="2"/>';
+ Readiness.DIMS.forEach(function(d,i){var p=pt(i,122);s+='<text x="'+p[0].toFixed(0)+'" y="'+p[1].toFixed(0)+'" text-anchor="middle" dominant-baseline="middle">'+Kit.esc(d[Kit.lang].split(" ")[0])+'</text>'});
+ return s+'</svg>'}
+function cls(v){return v>=60?"ok":v>=40?"warn":"bad"}
+function calc(){
+ R=Readiness.assess(A,{sector:SECTOR,bands:BANDS});
+ Readiness.DIMS.forEach(function(d){var e=$("ds_"+d.id);if(e){e.textContent=Math.round(R.dims[d.id]);e.className="pill "+cls(R.dims[d.id])}});
+ $("score").textContent=Math.round(R.total)+"/100";$("lvl").innerHTML='<span class="pill '+cls(R.total)+'">'+Readiness.LEVELS[R.level][1+L()]+'</span>';
+ var rank={};R.gaps.forEach(function(g,i){rank[g.id]=i+1});
+ $("dims").innerHTML='<tr><th class="n">'+t("dim")+'</th><th>'+t("sc")+'</th><th></th><th>'+t("gap")+'</th></tr>'+Readiness.DIMS.map(function(d){var v=R.dims[d.id];return '<tr><td class="n">'+d[Kit.lang]+'</td><td class="'+cls(v)+'">'+Math.round(v)+'</td><td><div class="bar"><i style="width:'+v.toFixed(0)+'%"></i></div></td><td>#'+rank[d.id]+'</td></tr>'}).join("");
+ $("radar").innerHTML=radar();
+ $("road").innerHTML=R.roadmap.map(function(p){return '<div class="ph"><b>'+p.days+' '+t("days")+'</b><ul class="tight">'+p.items.map(function(it){return it.kind==="pilot"?'<li><span class="pill ok">'+t("pilot")+'</span> '+Kit.esc(ucName(it.usecase))+'</li>':'<li><span class="pill">'+t("fix")+' · '+dimName(it.dim)+'</span> '+Kit.esc(Readiness.ACTIONS[it.dim][it.action][L()])+'</li>'}).join("")+'</ul></div>'}).join("")+'<p><b>'+t("pb")+':</b> '+Kit.fmt(R.pilot_budget)+' '+t("egp")+'</p>';
+ $("uc").innerHTML='<tr><th class="n">'+t("uc1")+'</th><th class="n">'+t("st")+'</th><th>'+t("val")+'</th><th>'+t("eff")+'</th><th>'+t("cost")+'</th></tr>'+R.usecases.map(function(u){return '<tr><td class="w">'+Kit.esc(ucName(u.id))+'</td><td class="w">'+(u.ready?'<span class="ok">✓ '+t("ready")+'</span>':'<span class="warn">'+t("need")+': '+u.missing.map(function(m){return dimName(m.dim)+' '+Math.round(m.have)+'→'+m.need}).join("، ")+'</span>')+'</td><td>'+u.value+'/5</td><td>'+u.effort+'/5</td><td>'+Kit.fmt(u.cost)+'</td></tr>'}).join("");
+ history.replaceState(null,"","#"+Readiness.encode(A)+"&sector="+SECTOR);
+}
+function bands(){$("bands").innerHTML=Object.keys(BANDS).map(function(k){return '<div class="f"><label>'+t("bandn")[k]+'</label><input type="number" min="0" step="10000" data-band="'+k+'" value="'+BANDS[k]+'"><span class="u">'+t("egp")+'</span></div>'}).join("")}
+function render(){Kit.setLang(Kit.lang);["title","sub","prof","co","sec","demo","scale","q","res","road","uc","ucn","bands","bandsn","disc","share","csv","prn"].forEach(function(k){var e=$("t_"+k)||$(k);if(e)e.textContent=t(k)});
+ $("lang").textContent=Kit.lang==="ar"?"EN":"ع";$("q_sec").innerHTML=Kit.q(t("hsec"));
+ $("sector").innerHTML=Object.keys(Readiness.SECTORS).map(function(k){return '<option value="'+k+'"'+(k===SECTOR?" selected":"")+'>'+Readiness.SECTORS[k][L()]+'</option>'}).join("");
+ $("demo").innerHTML=Object.keys(T.ar.demos).map(function(k){return '<option value="'+k+'">'+t("demos")[k]+'</option>'}).join("");
+ buildQs();bands();calc();AI.render()}
+document.addEventListener("change",function(e){var el=e.target;
+ if(el.dataset.d){A[el.dataset.d][+el.dataset.i]=+el.value;calc()}
+ else if(el.id==="sector"){SECTOR=el.value;calc()}
+ else if(el.id==="demo"){applyDemo(el.value);buildQs();calc()}});
+document.addEventListener("input",function(e){var b=e.target.dataset&&e.target.dataset.band;if(b){BANDS[b]=Math.max(0,+e.target.value||0);calc()}});
+$("lang").onclick=function(){Kit.lang=Kit.lang==="ar"?"en":"ar";render()};$("prn").onclick=function(){print()};
+$("share").onclick=function(){var b=this;try{navigator.clipboard.writeText(location.href).then(function(){b.textContent=t("copied");setTimeout(function(){b.textContent=t("share")},1500)})}catch(e){prompt("",location.href)}};
+$("csv").onclick=function(){var rows=[["section","item","value"]];rows.push(["overall","score",Math.round(R.total)]);Readiness.DIMS.forEach(function(d){rows.push(["dimension",d.en,Math.round(R.dims[d.id])])});R.usecases.forEach(function(u){rows.push(["use_case",Readiness.USECASES.filter(function(x){return x.id===u.id})[0].en,u.ready?"ready":"needs "+u.missing.map(function(m){return m.dim}).join("+")])});Kit.csv(rows,"ai-readiness.csv")};
+function prompt2(){var s=["Company sector: "+Readiness.SECTORS[SECTOR][1],"Overall AI readiness: "+Math.round(R.total)+"/100 ("+Readiness.LEVELS[R.level][2]+")"];
+ Readiness.DIMS.forEach(function(d){s.push(d.en+": "+Math.round(R.dims[d.id])+"/100")});
+ s.push("Ready use cases: "+R.usecases.filter(function(u){return u.ready}).map(function(u){return Readiness.USECASES.filter(function(x){return x.id===u.id})[0].en}).join("; "));
+ s.push("Blocked use cases: "+R.usecases.filter(function(u){return !u.ready}).slice(0,4).map(function(u){return Readiness.USECASES.filter(function(x){return x.id===u.id})[0].en+" (needs "+u.missing.map(function(m){return m.dim+" "+m.need}).join(", ")+")"}).join("; "));
+ s.push("90-day plan: "+R.roadmap.map(function(p){return p.days+": "+p.items.map(function(it){return it.kind==="pilot"?"pilot "+it.usecase:Readiness.ACTIONS[it.dim][it.action][1]}).join(" | ")}).join(" || "));
+ s.push("Suggested pilot budget: EGP "+R.pilot_budget);
+ s.push("Write an executive memo for the CEO of an Egyptian company: where they stand, the two biggest risks of moving fast, the plan, and what success looks like at day 90. Mention Egypt's Personal Data Protection Law 151/2020 only if governance is weak.");return s.join("\n")}
+var AI=AIPanel.mount($("ai"),{lang:function(){return Kit.lang},system:"You are an IT and AI adoption consultant for Egyptian companies.",prompt:prompt2});
+Kit.initTips();if(!location.hash)applyDemo("mid");render();
+</script>
+</body>
+</html>
