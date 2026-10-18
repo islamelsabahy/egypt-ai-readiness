@@ -27,3 +27,8 @@ Send a client the link, they answer, and they send back the result link. You get
 This is a self-assessment: the score is only as honest as the answers. Costs are indicative bands, not quotations. Not legal advice on Law 151/2020.
 
 Author: Islam El-Sherbiny · MIT License
+
+## Limitations
+- Demonstration tool built on **fictional sample data**. Outputs are decision support, not legal, tax or investment advice.
+- Results depend on the assumptions you enter; check them against your own numbers before relying on them.
+- Browser-only: nothing is sent to a server by this tool. See [SECURITY.md](SECURITY.md).
